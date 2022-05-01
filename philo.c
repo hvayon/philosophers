@@ -6,7 +6,7 @@
 /*   By: hvayon <hvayon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/24 11:43:13 by natalia           #+#    #+#             */
-/*   Updated: 2022/05/01 17:49:09 by hvayon           ###   ########.fr       */
+/*   Updated: 2022/05/01 19:03:05 by hvayon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,24 +112,21 @@ long  ft_current_pr_time(t_philo *ph)
 void *philo(void *philo)
 {
 	t_philo	*ph;
-	int was_sleeping = 0;
 	
-	//pthread_mutex_t entry_point = PTHREAD_MUTEX_INITIALIZER;
 	ph = (t_philo *)philo;
 	if (ph->id % 2)
-		usleep(2500); // чтобы философы неодновременно подходили к столу //написать цикл
+		usleep(2500); // чтобы философы неодновременно подходили к столу // оставить usleep
 	while(ph->number_of_eat) // поменяла while (1)
 	{
 		pthread_mutex_lock(ph->left_fork); 
 		pthread_mutex_lock(ph->entry_point); //добавить глобальный mutex на printf
-		printf("%ld %d was taken a fork\n", ft_current_pr_time(ph), ph->id);
+		printf("%ld %d has taken a fork\n", ft_current_pr_time(ph), ph->id);
 		pthread_mutex_unlock(ph->entry_point);
 		pthread_mutex_lock(&ph->right_fork);
 		pthread_mutex_lock(ph->entry_point);
-		printf("%ld %d was taken a fork\n",  ft_current_pr_time(ph), ph->id);
+		printf("%ld %d has taken a fork\n",  ft_current_pr_time(ph), ph->id);
 		pthread_mutex_unlock(ph->entry_point);
 		ph->start_eat = ft_current_time();
-		//ft_last_eating_time(&ph->last_eating_time, ph, was_sleeping); //время последнего обеда // поставила перед printf
 		pthread_mutex_lock(ph->entry_point);
 		printf("%ld %d is eating\n", ft_current_pr_time(ph), ph->id);
 		pthread_mutex_unlock(ph->entry_point);
@@ -171,10 +168,9 @@ int	is_dead(t_philo *ph, int i)
 			//переписать функцию current time
 			if ((ft_current_time() - ph[i].start_eat) >= (ph->in_data->time_to_die)) // убрала >=
 			{
-				printf("1st = %ld\n", ft_current_time() - ph[i].start_eat);
-				printf("2nd = %d\n", ph->in_data->time_to_die);
 				pthread_mutex_lock(ph->entry_point);
 				printf("%ld %d died\n", ft_current_time() - ph->in_data->start_time, ph->id); //start time
+				//pthread_mutex_unlock(ph->entry_point); нужен unlock или нет
 				return (1);
 			}
 		}
@@ -200,19 +196,13 @@ void	*check_dead(void *philo)
 	return (NULL);
 }
 
-void *test1(void *ph)
-{
-	printf("Test1\n");
-	return(NULL);	
-}
-
 pthread_t  *make_threads(t_args *data, t_philo *ph)
 {
 		int num;
 		int status;
 		int i;
 		pthread_t	*th;
-		pthread_t	monitor;
+		//pthread_t	monitor;
 		int			th_ok;
 		
 		th = (pthread_t *)malloc(sizeof(pthread_t) * data->number_of_philosophers); // зачем записывать в malloc
@@ -228,8 +218,6 @@ pthread_t  *make_threads(t_args *data, t_philo *ph)
 			num = pthread_create(&th[i], 0, philo, &(ph[i])); // сохранить номер философа
 			if (num)
 				return (NULL);
-			printf("i = %d\n", i);
-			printf("Hello from main!\n");
 			i++;
 		}
 		//pthread_join(monitor, NULL);
@@ -247,11 +235,28 @@ pthread_t  *make_threads(t_args *data, t_philo *ph)
 		return(th);
 }
 
+void	kill_philo(t_philo *ph, pthread_t	*th)
+{
+	int i;
+	
+	i = 0;
+	while(ph->in_data->number_of_philosophers > i)
+	{
+		
+		pthread_mutex_destroy(&ph[i].right_fork);
+		i++;
+	}
+	pthread_mutex_destroy(ph->entry_point);
+	free(th);
+	free(ph->in_data);
+	free(ph);
+}
+
 int main(int argc, char **argv)
 {
 		t_args  *data;
 		t_philo *ph;
-		pthread_t *id;
+		pthread_t *th;
 		pthread_mutex_t	entry_point;
 
 		pthread_mutex_init(&entry_point, NULL);
@@ -265,7 +270,8 @@ int main(int argc, char **argv)
 		ph = ph_init(data, entry_point);
 		if (!ph)
 			return(1);
-		make_threads(data, ph);
+		th = make_threads(data, ph);
+		kill_philo(ph, th);
 		//ft_current_time(ph);
 		//цикл для создание количества потоков равное количеству философов
 		//while(1), в котором проверка на живого философа
