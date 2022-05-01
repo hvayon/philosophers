@@ -6,7 +6,7 @@
 /*   By: hvayon <hvayon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/24 11:44:37 by natalia           #+#    #+#             */
-/*   Updated: 2022/04/30 20:43:46 by hvayon           ###   ########.fr       */
+/*   Updated: 2022/05/01 15:15:40 by hvayon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_args
     int             number_of_eat;
     int             eat_counter;
     t_timeval       program_start_time;
+    long            start_time;
     pthread_mutex_t write;
 }               t_args;
 
@@ -44,6 +45,7 @@ typedef struct s_philo
     t_timeval       program_start_time;
     t_timeval       last_eating_time;
     int             finish_act;
+    long            start_eat;
     pthread_mutex_t	*entry_point;
     
 }               t_philo;
