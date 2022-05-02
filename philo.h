@@ -6,7 +6,7 @@
 /*   By: hvayon <hvayon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/24 11:44:37 by natalia           #+#    #+#             */
-/*   Updated: 2022/05/01 15:15:40 by hvayon           ###   ########.fr       */
+/*   Updated: 2022/05/02 14:43:00 by hvayon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdio.h> 
 #include <sys/time.h>
 
-#include <stdio.h>
+#define SUCCESS        0
 
 typedef struct timeval	t_timeval;
 
@@ -38,8 +39,8 @@ typedef struct s_args
 typedef struct s_philo
 {
     t_args      *in_data;
-    pthread_mutex_t *left_fork; //*
-    pthread_mutex_t right_fork; //*
+    pthread_mutex_t *left_fork;
+    pthread_mutex_t right_fork;
     int             id;
     int             number_of_eat;
     t_timeval       program_start_time;
