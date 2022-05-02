@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natalia <natalia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hvayon <hvayon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/24 12:57:57 by natalia           #+#    #+#             */
-/*   Updated: 2022/04/24 13:02:42 by natalia          ###   ########.fr       */
+/*   Created: 2022/05/02 17:19:01 by hvayon            #+#    #+#             */
+/*   Updated: 2022/05/02 17:23:49 by hvayon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,34 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	return (ft_handle_range(res, nominate));
+}
+
+void	ft_usleep(long int time)
+{
+	long	i;
+
+	i = ft_current_time();
+	while ((ft_current_time() - i) < time)
+		usleep(100);
+}
+
+long	ft_current_time(void)
+{
+	long		value;
+	t_timeval	time;
+
+	gettimeofday(&time, NULL);
+	value = time.tv_sec * 1000 + time.tv_usec / 1000;
+	return (value);
+}
+
+long	ft_current_pr_time(t_philo *ph)
+{
+	t_timeval	current_time;
+	long		value;
+
+	gettimeofday(&current_time, NULL);
+	value = (current_time.tv_sec - ph->program_start_time.tv_sec) * 1000 + \
+				(current_time.tv_usec - ph->program_start_time.tv_usec) / 1000;
+	return (value);
 }
