@@ -1,8 +1,9 @@
-NAME	=	philo_bonus
-HEAD	=	philo_bonus.h
+NAME	=	philo
+HEAD	=	philo.h
 CC		=	cc
-CFLAGS	=	#-Wall -Wextra -Werror
-SRC		=	philo_bonus.c
+CFLAGS	=	-Wall -Wextra -Werror
+SRC		=	main.c philo.c philo_utils.c \
+			philo_init.c ft_threads.c
 OBJ		=	$(SRC:%.c=%.o)
 D_FILES =	$(SRC:%.c=%.d)
 RM		=	rm -f

@@ -1,31 +1,68 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   philo_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hvayon <hvayon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/02 17:26:54 by hvayon            #+#    #+#             */
-/*   Updated: 2022/05/03 14:13:30 by hvayon           ###   ########.fr       */
+/*   Created: 2022/05/03 16:34:00 by hvayon            #+#    #+#             */
+/*   Updated: 2022/05/03 18:47:44 by hvayon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
-void	ft_free(t_philo *ph, pthread_t	*th)
+//void	make_philo
+// void	make_fork(t_args *data)
+// {
+// 	pid_t pid;
+// 	int i;
+// 	i = 0;
+// 	while(i < data->number_of_philosophers)
+// 	{
+// 		philo->pid[i] = fork();
+// 		if (pid == 0)
+// 	}
+// }
+
+void	ft_sem_init(t_args *data)
 {
-	int	i;
+	sem_open(O_CREAT, data->number_of_philosophers);
+}
 
+int	ft_handle_range(long res, int nominate)
+{
+	if (res >= -2147483648 && res <= 2147483647)
+		return ((int)res);
+	else if (nominate == 1)
+		return (-1);
+	else
+		return (0);
+}
+
+int	ft_atoi(const char *str)
+{
+	int		i;
+	int		nominate;
+	long	res;
+
+	nominate = 1;
+	res = 0;
 	i = 0;
-	while (ph->in_data->number_of_philosophers > i)
+	while ((str[i] >= 9 && str[i] <= 13) || (str[i] == 32))
+		i = i + 1;
+	if (str[i] == '-' || str[i] == '+')
 	{
-		pthread_mutex_destroy(&ph[i].right_fork);
+		if (str[i] == '-')
+			nominate = nominate * -1;
+		i = i + 1;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		res = 10 * res + nominate * (str[i] - '0');
 		i++;
 	}
-	pthread_mutex_destroy(ph->entry_point);
-	free(th);
-	free(ph->in_data);
-	free(ph);
+	return (ft_handle_range(res, nominate));
 }
 
 t_args	*data_init(int argc, char **argv)
@@ -35,6 +72,8 @@ t_args	*data_init(int argc, char **argv)
 
 	i = 0;
 	data = malloc(sizeof(t_args));
+	if (!data)
+		return(NULL);
 	while (++i < argc)
 	{
 		if (ft_atoi(argv[i]) <= 0)
@@ -56,23 +95,15 @@ int	main(int argc, char **argv)
 {
 	t_args			*data;
 	t_philo			*ph;
-	pthread_t		*th;
-	pthread_mutex_t	entry_point;
-	pthread_mutex_t	finish_mut;
+	//pthread_t		*th;
+	sem_t			*semaphore;
 
-	pthread_mutex_init(&entry_point, NULL);
-	pthread_mutex_init(&finish_mut, NULL);
 	if (argc > 6 || argc < 5)
 		return (1);
 	data = data_init(argc, argv);
 	if (!data)
 		return (1);
-	ph = ph_init(data, entry_point, finish_mut);
-	if (!ph)
-		return (1);
-	th = make_threads(data, ph);
-	if (!th)
-		return (1);
-	ft_free(ph, th);
+	ft_sem_init(data); //сделать симафоры
+	make_philo(); //сделать философов
 	return (0);
 }

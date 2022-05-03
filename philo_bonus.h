@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hvayon <hvayon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/24 11:44:37 by natalia           #+#    #+#             */
-/*   Updated: 2022/05/03 14:08:53 by hvayon           ###   ########.fr       */
+/*   Created: 2022/05/03 16:34:14 by hvayon            #+#    #+#             */
+/*   Updated: 2022/05/03 18:34:54 by hvayon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 
 # include <pthread.h>
 # include <stdlib.h>
@@ -19,7 +19,10 @@
 # include <stdio.h>
 # include <sys/time.h>
 
-# define SUCCESS			0
+# include <semaphore.h>
+# include <fcntl.h>
+
+# define SUCCESS		0
 # define EATING			1
 # define SLEEPING		2
 # define THINKING		3
@@ -52,17 +55,8 @@ typedef struct s_philo
 	long			start_eat;
 	pthread_mutex_t	*entry_point;
 	pthread_mutex_t	*finish_mut;
+	int 			pid;
 
 }				t_philo;
-
-int			ft_atoi(const char *str);
-int			ft_printf(t_philo *ph, int flag);
-void		*philo(void *philo);
-long		ft_current_time(void);
-long		ft_current_pr_time(t_philo *ph);
-void		ft_usleep(long int time);
-t_philo		*ph_init(t_args *data, pthread_mutex_t entry_point, \
-										pthread_mutex_t finish);
-pthread_t	*make_threads(t_args *data, t_philo *ph);
 
 #endif
