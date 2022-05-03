@@ -6,11 +6,30 @@
 /*   By: hvayon <hvayon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 17:43:06 by hvayon            #+#    #+#             */
-/*   Updated: 2022/05/02 19:56:36 by hvayon           ###   ########.fr       */
+/*   Updated: 2022/05/03 14:08:26 by hvayon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	all_philo_eat(t_philo *ph)
+{
+	pthread_mutex_unlock(ph->finish_mut);
+	pthread_mutex_lock(ph->entry_point);
+	printf("All the philosopher has eaten at least %d times each\n", \
+										ph->in_data->number_of_eat);
+	return (1);
+}
+
+int	philo_is_dead(t_philo *ph)
+{
+	pthread_mutex_unlock(ph->finish_mut);
+	pthread_mutex_unlock(ph->entry_point);
+	pthread_mutex_lock(ph->entry_point);
+	printf("%ld %d died\n", ft_current_time() - \
+								ph->in_data->start_time, ph->id);
+	return (1);
+}
 
 int	is_dead(t_philo *ph, int i)
 {
@@ -18,33 +37,18 @@ int	is_dead(t_philo *ph, int i)
 	{
 		pthread_mutex_lock(ph->finish_mut);
 		if (ph->in_data->number_of_philosophers == ph->in_data->eat_counter)
-		{
-			pthread_mutex_unlock(ph->finish_mut);
-			pthread_mutex_lock(ph->entry_point);
-			printf("All the philosopher has eaten at least %d times each\n", \
-												ph->in_data->number_of_eat);
-			return (1);
-		}
+			all_philo_eat(ph);
 		pthread_mutex_unlock(ph->finish_mut);
 		pthread_mutex_lock(ph->finish_mut);
 		if (!ph[i].finish_act)
 		{	
 			pthread_mutex_lock(ph->entry_point);
-			//pthread_mutex_unlock(ph->finish_mut);
 			if ((ft_current_time() - ph[i].start_eat) >= \
 												(ph->in_data->time_to_die))
-			{
-				pthread_mutex_unlock(ph->finish_mut);
-				pthread_mutex_unlock(ph->entry_point);
-				pthread_mutex_lock(ph->entry_point);
-				printf("%ld %d died\n", ft_current_time() - \
-											ph->in_data->start_time, ph->id);
-				return (1);
-			}
+				philo_is_dead(ph);
 			pthread_mutex_unlock(ph->entry_point);
 		}
 		pthread_mutex_unlock(ph->finish_mut);
-		//pthread_mutex_unlock(ph->entry_point);
 		i++;
 	}
 	return (0);

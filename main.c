@@ -6,7 +6,7 @@
 /*   By: hvayon <hvayon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 17:26:54 by hvayon            #+#    #+#             */
-/*   Updated: 2022/05/02 19:48:20 by hvayon           ###   ########.fr       */
+/*   Updated: 2022/05/03 14:13:30 by hvayon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int	main(int argc, char **argv)
 	pthread_mutex_t	finish_mut;
 
 	pthread_mutex_init(&entry_point, NULL);
+	pthread_mutex_init(&finish_mut, NULL);
 	if (argc > 6 || argc < 5)
 		return (1);
 	data = data_init(argc, argv);

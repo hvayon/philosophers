@@ -6,7 +6,7 @@
 /*   By: hvayon <hvayon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/24 11:44:37 by natalia           #+#    #+#             */
-/*   Updated: 2022/05/02 19:49:16 by hvayon           ###   ########.fr       */
+/*   Updated: 2022/05/03 14:08:53 by hvayon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ void		*philo(void *philo);
 long		ft_current_time(void);
 long		ft_current_pr_time(t_philo *ph);
 void		ft_usleep(long int time);
-t_philo		*ph_init(t_args *data, pthread_mutex_t entry_point, pthread_mutex_t finish);
+t_philo		*ph_init(t_args *data, pthread_mutex_t entry_point, \
+										pthread_mutex_t finish);
 pthread_t	*make_threads(t_args *data, t_philo *ph);
 
 #endif

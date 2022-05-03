@@ -6,7 +6,7 @@
 /*   By: hvayon <hvayon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 17:18:50 by hvayon            #+#    #+#             */
-/*   Updated: 2022/05/02 19:48:31 by hvayon           ###   ########.fr       */
+/*   Updated: 2022/05/03 14:14:04 by hvayon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,16 @@ void	make_forks(t_args *data, t_philo *ph)
 	}
 }
 
-t_philo	*ph_init(t_args *data, pthread_mutex_t entry_point,\
- pthread_mutex_t	finish_mut)
+t_philo	*ph_init(t_args *data, pthread_mutex_t entry_point, \
+								pthread_mutex_t finish_mut)
 {
 	t_philo			*ph;
 	int				i;
-	// pthread_mutex_t	finish_mut;
 
 	i = 0;
 	ph = malloc(sizeof(t_philo) * data->number_of_philosophers);
 	if (!ph)
 		return (NULL);
-	pthread_mutex_init(&finish_mut, NULL);
 	while (i < data->number_of_philosophers)
 	{
 		ph[i].id = i + 1;

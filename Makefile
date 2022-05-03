@@ -1,7 +1,7 @@
 NAME	=	philo
 HEAD	=	philo.h
 CC		=	cc
-CFLAGS	=	-fsanitize=thread -g
+CFLAGS	=	-Wall -Wextra -Werror
 SRC		=	main.c philo.c philo_utils.c \
 			philo_init.c ft_threads.c
 OBJ		=	$(SRC:%.c=%.o)
