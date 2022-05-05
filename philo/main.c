@@ -37,7 +37,7 @@ t_args	*data_init(int argc, char **argv)
 	i = 0;
 	data = malloc(sizeof(t_args));
 	if (!data)
-		return(NULL);
+		return (NULL);
 	while (++i < argc)
 	{
 		if (ft_atoi(argv[i]) <= 0)

@@ -64,5 +64,6 @@ void		ft_usleep(long int time);
 t_philo		*ph_init(t_args *data, pthread_mutex_t entry_point, \
 										pthread_mutex_t finish);
 pthread_t	*make_threads(t_args *data, t_philo *ph);
+void		*monitor(void *philo);
 
 #endif
