@@ -41,6 +41,7 @@ t_philo	*ph_init(t_args *data, pthread_mutex_t entry_point, \
 		ph[i].in_data = data;
 		ph[i].program_start_time = data->program_start_time;
 		ph[i].entry_point = &entry_point;
+		ph[i].finish_act = 0;
 		ph[i].finish_mut = &finish_mut;
 		ph[i].start_eat = ft_current_time();
 		gettimeofday(&ph[i].last_eating_time, 0);

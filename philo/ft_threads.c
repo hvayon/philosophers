@@ -66,10 +66,7 @@ void	*monitor(void *philo)
 	{
 		i = 0;
 		if (is_dead(ph, i))
-		{
 			break ;
-			printf("Check break\n");
-		}
 	}
 	return (NULL);
 }
@@ -80,9 +77,9 @@ pthread_t	*make_threads(t_args *data, t_philo *ph)
 	int			i;
 	pthread_t	*th;
 	int			th_ok;
-	int			moni;
 
-	th = (pthread_t *)malloc(sizeof(pthread_t) * data->number_of_philosophers);
+	th = (pthread_t *)malloc(sizeof(pthread_t) * \
+				(data->number_of_philosophers + 1));
 	if (!th)
 		return (NULL);
 	data->start_time = ft_current_time();
@@ -94,11 +91,6 @@ pthread_t	*make_threads(t_args *data, t_philo *ph)
 			return (NULL);
 		pthread_detach(th[i]);
 	}
-	moni = pthread_create(&th[data->number_of_philosophers], 0, monitor, ph);
-	if (moni)
-		return (NULL);
-	status = pthread_join(th[data->number_of_philosophers], NULL);
-	if (status != SUCCESS)
-		printf("main error: can't join thread, status = %d\n", status);
+	monitor(ph);
 	return (th);
 }
