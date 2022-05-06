@@ -1,7 +1,7 @@
 NAME	=	philo_bonus
 HEAD	=	philo_bonus.h
 CC		=	cc
-CFLAGS	=	#-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror
 SRC		=	philo_bonus.c
 OBJ		=	$(SRC:%.c=%.o)
 D_FILES =	$(SRC:%.c=%.d)
