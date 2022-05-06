@@ -72,13 +72,6 @@ void	*monitor(void *philo)
 									ph->in_data->start_time, ph->counter);
 			exit (0);
 		}
-		// if (ph->number_of_eat == 0)
-		// {
-		// 	// philo->stop = 1;
-		// 	printf("All dead\n");
-		// 	exit (0);
-		// 	//break ;
-		// }
 	}
 }
 
@@ -127,6 +120,8 @@ void	*philo(t_philo *ph)
 	if (ph_ok)
 		return (NULL);
 	pthread_detach(check_monitor);
+	if (ph->counter % 2)
+		usleep(2500);
 	while(ph->number_of_eat)
 	{
 		sem_wait(ph->fork);
