@@ -54,6 +54,7 @@ typedef struct s_philo
 	t_timeval		last_eating_time;
 	int				finish_act;
 	long			start_eat;
+	long			start_time;
 	int 			counter;
 	int 			*pids;
 	sem_t			*fork;

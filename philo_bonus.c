@@ -78,6 +78,7 @@ void	*monitor(void *philo)
 
 int	ft_printf(t_philo *ph, int flag)
 {
+
 	sem_wait(ph->entry_point);
 	if (flag == 1)
 		printf("%ld %d is eating\n", ft_current_pr_time(ph), ph->counter);
@@ -121,7 +122,8 @@ void	*philo(t_philo *ph)
 		return (NULL);
 	pthread_detach(check_monitor);
 	if (ph->counter % 2)
-		usleep(2500);
+		usleep(500);
+	//gettimeofday(&(ph->last_eating_time), 0);
 	while(ph->number_of_eat)
 	{
 		sem_wait(ph->fork);
@@ -145,9 +147,10 @@ void	*philo(t_philo *ph)
 
 void	ft_sem_init(t_philo *ph) //инициализация
 {
+	sem_unlink("fork");
+	sem_unlink("entry_point");
 	sem_open("fork", O_CREAT, S_IRWXU, ph->in_data->number_of_philo);
 	sem_open("entry_point", O_CREAT, S_IRWXU, 1);
-	//data->write = sem_open("write", O_CREAT, S_IRWXU, 1); // ???
 }
 
 int	ft_handle_range(long res, int nominate)
@@ -191,16 +194,23 @@ t_philo	*ph_init(t_args *data)
 	int				i;
 
 	i = 0;
-	ph = malloc(sizeof(t_philo));
+	ph = malloc(sizeof(t_philo) * data->number_of_philo);
 	if (!ph)
 		return (NULL);
 	ph->counter = 0;
 	ph->number_of_eat = data->number_of_eat;
 	ph->in_data = data;
-	ph->program_start_time = data->program_start_time;
+	// ph->program_start_time = data->program_start_time;
 	ph->finish_act = 0;
 	ph->start_eat = ft_current_time();
-	gettimeofday(&ph[i].last_eating_time, 0);
+	i = 0;
+	while (i < ph->in_data->number_of_philo)
+	{
+		gettimeofday(&ph[i].program_start_time, 0);
+		gettimeofday(&ph[i].last_eating_time, 0);
+		ph[i].start_time = ft_current_time();
+		i++;
+	}
 	return (ph);
 }
 
@@ -214,11 +224,6 @@ void	exit_philo(t_philo *ph)
 	
 	y = malloc(sizeof(int) * ph->in_data->number_of_philo);
 	ft_memset(y, 0, sizeof(int) * ph->in_data->number_of_philo);
-	printf("Y = %d\n", y[0]);
-	printf("Y = %d\n", y[1]);
-	printf("Y = %d\n", y[2]);
-	printf("Y = %d\n", y[3]);
-	printf("Y = %d\n", y[4]);
 	i = -1;
 	while (++i < ph->in_data->number_of_philo)
 	{
@@ -227,19 +232,11 @@ void	exit_philo(t_philo *ph)
 		{
 			i = -1;
 			while(++i < ph->in_data->number_of_philo)
-			{
-				printf("Check\n");
 				kill(ph->pids[i], SIGTERM);
-			}
 			break;
 		}
 		y[i] = 1;
 	}
-	printf("Y = %d\n", y[0]);
-	printf("Y = %d\n", y[1]);
-	printf("Y = %d\n", y[2]);
-	printf("Y = %d\n", y[3]);
-	printf("Y = %d\n", y[4]);
 	i = -1;
 	while (++i < ph->in_data->number_of_philo)
 		if (y[i] == 0)
@@ -280,8 +277,6 @@ int	main(int argc, char **argv)
 {
 	t_args			*data;
 	t_philo			*ph;
-	//pthread_t		*th;
-	//sem_t			*semaphore;
 
 	if (argc > 6 || argc < 5)
 		return (1);
@@ -289,6 +284,7 @@ int	main(int argc, char **argv)
 	if (!data)
 		return (1);
 	ph = ph_init(data);
+	//data->start_time = ft_current_time();
 	ft_sem_init(ph); //сделать симафоры
 	make_philo(ph);
 	exit_philo(ph);
