@@ -34,14 +34,14 @@ int	ft_no_finish_act(t_philo *ph, int i)
 
 int	is_dead(t_philo *ph, int i)
 {
-	while (i < ph->in_data->number_of_philosophers)
+	while (i < ph->in_data->number_of_philo)
 	{
 		pthread_mutex_lock(ph->finish_mut);
-		if (ph->in_data->number_of_philosophers == ph->in_data->eat_counter)
+		if (ph->in_data->number_of_philo == ph->in_data->eat_counter)
 		{
 			pthread_mutex_unlock(ph->finish_mut);
 			pthread_mutex_lock(ph->entry_point);
-			printf("All the philosopher has eaten at least %d times each\n", \
+			printf("All the philosophers has eaten %d times each\n", \
 										ph->in_data->number_of_eat);
 			return (1);
 		}
@@ -61,7 +61,7 @@ void	*monitor(void *philo)
 	t_philo	*ph;
 
 	ph = (t_philo *)philo;
-	usleep(100);
+	usleep(900);
 	while (1)
 	{
 		i = 0;
@@ -73,18 +73,17 @@ void	*monitor(void *philo)
 
 pthread_t	*make_threads(t_args *data, t_philo *ph)
 {
-	int			status;
 	int			i;
 	pthread_t	*th;
 	int			th_ok;
 
 	th = (pthread_t *)malloc(sizeof(pthread_t) * \
-				(data->number_of_philosophers + 1));
+				(data->number_of_philo + 1));
 	if (!th)
 		return (NULL);
 	data->start_time = ft_current_time();
 	i = -1;
-	while (++i < data->number_of_philosophers)
+	while (++i < data->number_of_philo)
 	{
 		th_ok = pthread_create(&th[i], 0, philo, &(ph[i]));
 		if (th_ok)

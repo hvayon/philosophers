@@ -29,7 +29,7 @@ typedef struct timeval	t_timeval;
 
 typedef struct s_args
 {
-	int				number_of_philosophers;
+	int				number_of_philo;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;

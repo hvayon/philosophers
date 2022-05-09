@@ -23,11 +23,10 @@
 # include <semaphore.h>
 # include <fcntl.h>
 
-# define SUCCESS		0
-# define EATING			1
-# define SLEEPING		2
-# define THINKING		3
-# define FORK			4
+# define FORK			1
+# define EATING			2
+# define SLEEPING		3
+# define THINKING		4
 
 typedef struct timeval	t_timeval;
 
@@ -55,9 +54,13 @@ void	ft_usleep(long int time);
 long	ft_current_time(void);
 void	make_philo(t_args *data);
 void	exit_philo(t_args *data);
-void	ft_philo_eating(t_args *data);
-void	ft_philo_sleeping(t_args *data);
-void	ft_philo_thinking(t_args *data);
+int		ft_philo_eating(t_args *data);
+int		ft_philo_sleeping(t_args *data);
+int		ft_philo_thinking(t_args *data);
 int		ft_printf(t_args *data, int flag);
+t_args	*data_init(int argc, char **argv);
+void	ft_sem_init(t_args *data);
+void	delete_sem(t_args *data);
+void	*monitor(void *data);
 
 #endif

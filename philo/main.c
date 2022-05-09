@@ -17,7 +17,7 @@ void	ft_free(t_philo *ph, pthread_t	*th)
 	int	i;
 
 	i = 0;
-	while (ph->in_data->number_of_philosophers > i)
+	while (ph->in_data->number_of_philo > i)
 	{
 		pthread_mutex_destroy(&ph[i].right_fork);
 		i++;
@@ -32,18 +32,11 @@ void	ft_free(t_philo *ph, pthread_t	*th)
 t_args	*data_init(int argc, char **argv)
 {
 	t_args	*data;
-	int		i;
 
-	i = 0;
 	data = malloc(sizeof(t_args));
 	if (!data)
 		return (NULL);
-	while (++i < argc)
-	{
-		if (ft_atoi(argv[i]) <= 0)
-			return (NULL);
-	}
-	data->number_of_philosophers = ft_atoi(argv[1]);
+	data->number_of_philo = ft_atoi(argv[1]);
 	data->time_to_die = ft_atoi(argv[2]);
 	data->time_to_eat = ft_atoi(argv[3]);
 	data->time_to_sleep = ft_atoi(argv[4]);
@@ -52,6 +45,13 @@ t_args	*data_init(int argc, char **argv)
 	data->number_of_eat = -1;
 	if (argc == 6)
 		data->number_of_eat = ft_atoi(argv[5]);
+	if (data->number_of_philo < 1 || data->number_of_philo > 200 \
+	|| data->time_to_die < 1 || data->time_to_eat < 1 \
+	|| data->time_to_sleep < 1 || data->number_of_eat < -1)
+	{
+		free(data);
+		return (0);
+	}
 	return (data);
 }
 

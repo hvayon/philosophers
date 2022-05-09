@@ -28,6 +28,24 @@ void	delete_sem(t_args *data)
 	sem_unlink("fork");
 }
 
+void	*monitor(void *data)
+{
+	t_args	*d;
+
+	d = (t_args *)data;
+	while (1)
+	{
+		if ((ft_current_time() - d->start_eat) >= (d->time_to_die))
+		{
+			sem_wait(d->entry_point);
+			printf("%ld %d died\n", ft_current_time() - d->start_time, \
+															d->counter);
+			exit (0);
+		}
+		usleep(900);
+	}
+}
+
 t_args	*data_init(int argc, char **argv)
 {
 	t_args	*data;

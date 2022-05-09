@@ -17,7 +17,7 @@ void	make_forks(t_args *data, t_philo *ph)
 	int	i;
 
 	i = 1;
-	while (i < data->number_of_philosophers)
+	while (i < data->number_of_philo)
 	{
 		ph[i].left_fork = &ph[i - 1].right_fork;
 		i++;
@@ -31,10 +31,10 @@ t_philo	*ph_init(t_args *data, pthread_mutex_t entry_point, \
 	int				i;
 
 	i = 0;
-	ph = malloc(sizeof(t_philo) * data->number_of_philosophers);
+	ph = malloc(sizeof(t_philo) * data->number_of_philo);
 	if (!ph)
 		return (NULL);
-	while (i < data->number_of_philosophers)
+	while (i < data->number_of_philo)
 	{
 		ph[i].id = i + 1;
 		ph[i].number_of_eat = data->number_of_eat;

@@ -1,7 +1,7 @@
 NAME	=	philo_bonus
 HEAD	=	philo_bonus.h
 CC		=	cc
-CFLAGS	=	-fsanitize=address 
+CFLAGS	=	-Wall -Wextra -Werror -MMD
 SRC		=	philo_bonus.c main_bonus.c philo_utils_bonus.c \
 			philo_life_bonus.c
 OBJ		=	$(SRC:%.c=%.o)

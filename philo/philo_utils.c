@@ -44,6 +44,8 @@ int	ft_atoi(const char *str)
 		res = 10 * res + nominate * (str[i] - '0');
 		i++;
 	}
+	if (str[i] >= 'A' && str[i] <= 'z')
+		return (0);
 	return (ft_handle_range(res, nominate));
 }
 

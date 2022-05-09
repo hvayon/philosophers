@@ -1,8 +1,8 @@
 NAME	=	philo
 HEAD	=	philo.h
 CC		=	cc
-CFLAGS	=	#-fsanitize=thread
-SRC		=	main.c philo.c philo_utils.c \
+CFLAGS	=	-Wall -Wextra -Werror -MMD
+SRC		=	main.c philo_life.c philo_utils.c \
 			philo_init.c ft_threads.c
 OBJ		=	$(SRC:%.c=%.o)
 D_FILES =	$(SRC:%.c=%.d)
